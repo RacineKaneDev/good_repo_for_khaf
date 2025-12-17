@@ -3,12 +3,20 @@ import { useFormik } from 'formik';
 import { Grid, TextField, Button, IconButton, CircularProgress, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllCategories } from '../../Redux/Category/Action';
 
 
 
 const CreateOpportunityForm = () => {
   const [uploadImage, setUploadImage] = useState(null);
+  const dispatch = useDispatch();
+  const { category } = useSelector(store => store);
+
+  useEffect(() => {
+    dispatch(getAllCategories());
+  }, [dispatch]);
 
    const formik = useFormik({
     initialValues: {
@@ -152,9 +160,9 @@ const CreateOpportunityForm = () => {
                 name="category"
                 onChange={formik.handleChange}
               >
-              {[1,1,1].map((item)=> <MenuItem>Agriculture</MenuItem>)}
-               
-               
+              {category.categories.map((item) => (
+                  <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+              ))}
               </Select>
             </FormControl>
           </Grid>

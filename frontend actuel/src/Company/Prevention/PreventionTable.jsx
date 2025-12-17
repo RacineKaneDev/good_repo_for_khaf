@@ -8,6 +8,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Button } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllPreventions } from '../../Redux/Prevention/Action';
 
 
 
@@ -34,74 +36,39 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 
 const PreventionTable = () => {
+    const dispatch = useDispatch();
+    const { prevention } = useSelector(store => store);
+
+    useEffect(() => {
+        dispatch(getAllPreventions());
+    }, [dispatch]);
+
   return (
     <>
-      <h1 className="pb-5 font-bold text-xl">Liste des Préventions</h1>
+      <h1 className="pb-5 font-bold text-xl">Mes Preventions</h1>
 
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>Auteur</StyledTableCell>
-              <StyledTableCell>Zone Prévention</StyledTableCell>
-              <StyledTableCell>Type Prévention</StyledTableCell>
+              <StyledTableCell>Nom de l'entreprise</StyledTableCell>
               <StyledTableCell>Date</StyledTableCell>
-              <StyledTableCell>Statut</StyledTableCell>
-              <StyledTableCell align="right">Annuler</StyledTableCell>
-              <StyledTableCell align="right">Police</StyledTableCell>
+              <StyledTableCell>Montant</StyledTableCell>
+              <StyledTableCell align="right">Actions</StyledTableCell>
             </TableRow>
           </TableHead>
 
           <TableBody>
-            {[1, 1, 1, 1, 1].map((item) => (
+            {prevention.preventions.map((item) => (
               <StyledTableRow key={item.id}>
-
-                {/* PREVENU */}
                 <StyledTableCell component="th" scope="row">
-                  <ul className="space-y-2">
-                    <div>
-                      <li><strong>Nom :</strong> Omar Diop</li>
-                      <li><strong>Email :</strong> omar@example.com</li>
-                      <li><strong>Adresse :</strong> Dakar, Yoff</li>
-                      <li><strong>Âge :</strong> 28</li>
-                    </div>
-                  </ul>
+                  {item.companyName || item.title || "Nom de l'entreprise"}
                 </StyledTableCell>
-
-                {/* ZONE */}
-                <StyledTableCell className="space-y-2">
-                  <p>Mbour</p>
-                </StyledTableCell>
-
-                {/* TYPE */}
-                <StyledTableCell className="space-y-2">
-                  <p>Sensibilisation</p>
-                </StyledTableCell>
-
-                {/* DATE */}
-                <StyledTableCell className="space-y-2">
-                  <p>05/01/2025</p>
-                </StyledTableCell>
-
-                {/* STATUT */}
-                <StyledTableCell>
-                  <p className="text-orange-500">En attente</p>
-                </StyledTableCell>
-
-                {/* ANNULER */}
+                <StyledTableCell>{item.date}</StyledTableCell>
+                <StyledTableCell>{item.amount} fr CFA</StyledTableCell>
                 <StyledTableCell align="right">
-                  <Button variant="outlined" color="error">
-                    Annuler
-                  </Button>
+                    <Button variant="outlined" color="primary">Details</Button>
                 </StyledTableCell>
-
-                {/* POLICE */}
-                <StyledTableCell align="right">
-                  <Button variant="contained" color="secondary">
-                    Envoyer rapport prévention
-                  </Button>
-                </StyledTableCell>
-
               </StyledTableRow>
             ))}
           </TableBody>

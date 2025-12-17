@@ -8,6 +8,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Button } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserBookings } from '../../Redux/Booking/Action';
 
 
 
@@ -33,6 +35,15 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const BookingTable = () => {
+  const dispatch = useDispatch();
+  const { booking, auth } = useSelector(store => store);
+
+  useEffect(() => {
+    if (auth.user?.id) {
+       dispatch(getUserBookings(auth.user?.id));
+    }
+  }, [auth.user?.id, dispatch]);
+
   return (
     <>
       <h1 className="pb-5 font-bold text-xl">Reservations d'entretien</h1>
@@ -52,31 +63,28 @@ const BookingTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {[1,1,1,1,1,1,1].map((item) => (
+            {booking.bookings.map((item) => (
               <StyledTableRow key={item.id}>
                 <StyledTableCell component="th" scope="row">
                   <ul className="space-y-2">
-                    {[1].map((service) => (
+                      {/* Assuming opportunity is an object or string */}
                       <div>
-                        <li>Terrain Agricole</li>
-                      <li>financement atelier de coiffure</li>
+                        <li>{item.opportunity?.title || item.opportunityName}</li>
                       </div>
-
-                    ))}
                   </ul>
                 </StyledTableCell>
 
                 <StyledTableCell className="space-y-2">
-                  <p> Date : 05/01/2025</p>
-                  <p> Time : 10:00 AM</p>
+                  <p> Date : {item.date}</p>
+                  <p> Time : {item.time}</p>
                 </StyledTableCell>
-                <StyledTableCell>1200 fr CFA</StyledTableCell>
+                <StyledTableCell>{item.amount || item.price} fr CFA</StyledTableCell>
                 <StyledTableCell className="space-y-2">
-                  <p>Full Name : Omar Diop</p>
-                  <p>Email : omar.diop@example.com</p>
+                  <p>Full Name : {item.customer?.fullName || item.customerName}</p>
+                  <p>Email : {item.customer?.email}</p>
                 </StyledTableCell>
                 <StyledTableCell >
-                  <p className={`text-green-500`}>confirmé</p>
+                  <p className={`text-green-500`}>{item.status}</p>
                   </StyledTableCell>
                 <StyledTableCell align="right">
                   <Button

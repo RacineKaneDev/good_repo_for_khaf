@@ -14,12 +14,17 @@ import CompanyDashboard from './Company/CompanyDashboard.jsx';
 import CustomerRoutes from './Routes/CustomerRoutes.jsx';
 import CustomerPreventionRoutes from './Routes/CustomerPreventionRoutes.jsx';
 import AdminDashboard from './Admin/AdminDashboard';
+import { useSelector } from 'react-redux';
+import useNotificationWebsoket from './util/useNotificationWebsoket';
 
 
 
 
 
 function App() {
+  const { auth } = useSelector(store => store);
+  useNotificationWebsoket(auth.user?.id, 'user');
+
   return (
     <ThemeProvider theme={greenTheme}>
 

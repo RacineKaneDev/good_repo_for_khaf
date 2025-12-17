@@ -2,7 +2,7 @@ import React from 'react'
 import { Card } from '@mui/material';
 
 
-const PreventionNotificationCard = () => {
+const PreventionNotificationCard = ({ item }) => {
   return (
     <Card
       sx={{ bgcolor: "#EAF0F1" }}
@@ -11,11 +11,11 @@ const PreventionNotificationCard = () => {
     >
       🛎️
       <div>
-        <p>votre Prévention a été un succès!</p>
+        <p>{item.title || "Nouvelle Notification"}</p>
         <h1 className="space-x-3">
-          <h1 className='font-semibold'>Les migrants ont été stoppés à temps</h1>
+          <h1 className='font-semibold'>{item.message || "Vous avez une nouvelle notification."}</h1>
         </h1>
-        <p className='text-sm text-gray-500'><strong>Passez dans les locaux de NdankNdank pour recevoir votre récompense de : 5000 FCFA</strong></p>
+        <p className='text-sm text-gray-500'><strong>{item.timestamp || ""}</strong></p>
       </div>
     </Card>
   )

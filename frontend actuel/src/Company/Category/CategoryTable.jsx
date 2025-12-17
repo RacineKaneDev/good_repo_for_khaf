@@ -9,6 +9,9 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllCategories } from '../../Redux/Category/Action';
+import { useEffect } from 'react';
 
 
 
@@ -45,6 +48,13 @@ const style = {
 };
 
 const CategoryTable = () => {
+  const dispatch = useDispatch();
+  const { category } = useSelector(store => store);
+
+  useEffect(() => {
+    dispatch(getAllCategories());
+  }, [dispatch]);
+
    return (
     <>
       <TableContainer component={Paper}>
@@ -59,14 +69,14 @@ const CategoryTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {[1,1,1].map((item) => (
+            {category.categories.map((item) => (
               <StyledTableRow key={item.id}>
                 <StyledTableCell component="th" scope="row">
                   <div className="flex gap-1 flex-wrap">
-                    <img className="w-20 rounded-md" src="https://centre-developpement-agroecologie.fr/wp-content/uploads/elevage-en-agroecologie-e1614766757325.jpg" alt="" />
+                    <img className="w-20 rounded-md" src={item.image || "https://centre-developpement-agroecologie.fr/wp-content/uploads/elevage-en-agroecologie-e1614766757325.jpg"} alt="" />
                   </div>
                 </StyledTableCell>
-                <StyledTableCell>Elevage</StyledTableCell>
+                <StyledTableCell>{item.name}</StyledTableCell>
 
                 <StyledTableCell align="right">
                   <IconButton

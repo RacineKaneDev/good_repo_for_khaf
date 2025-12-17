@@ -3,7 +3,18 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 
 
 
+import { useDispatch, useSelector } from 'react-redux';
+import { getCompanyBookings } from '../../Redux/Booking/Action';
+import { useEffect } from 'react';
+
 const TransactionTable = () => {
+  const dispatch = useDispatch();
+  const { booking } = useSelector(store => store);
+
+  useEffect(() => {
+    dispatch(getCompanyBookings());
+  }, [dispatch]);
+
  return (
     <>
       <TableContainer component={Paper}>
@@ -17,29 +28,28 @@ const TransactionTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {[1,1,1,1].map((item) => (
+            {booking.bookings.map((item) => (
               <TableRow key={item.id}>
                 <TableCell align="left">
                   <div className="space-y-1">
                     <h1 className="font-medium">
-                      05 Aug, 2025
+                      {item.date}
                     </h1>
-                    
                   </div>
                 </TableCell>
                 <TableCell component="th" scope="row">
                   <div className="space-y-2">
-                    <h1>racine kane</h1>
-                    <h1 className="font-semibold">racine.kane@example.com</h1>
+                    <h1>{item.customer?.fullName || item.customerName}</h1>
+                    <h1 className="font-semibold">{item.customer?.email}</h1>
                     <h1 className="font-bold text-gray-600">
-                      +221 77 123 45 67
+                      {item.customer?.phone}
                     </h1>
                   </div>
                 </TableCell>
                 <TableCell>
-                  Booking Id : <strong> 1 </strong>
+                  Booking Id : <strong> {item.id} </strong>
                 </TableCell>
-                <TableCell align="right">1000 fr CFA</TableCell>
+                <TableCell align="right">{item.amount || item.price} fr CFA</TableCell>
               </TableRow>
             ))}
           </TableBody>

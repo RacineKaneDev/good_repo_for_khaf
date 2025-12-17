@@ -46,7 +46,7 @@ const CompanyDetails = () => {
           <div className="flex justify-center ">
            <CreateReviewForm companyId={id} />
           </div>:activeTab.name==="Avis"?<div>
-            <Review />
+            <Review companyId={id} />
           </div>:<CompanyOpportunitiesDetails companyId={id} />}
       </div>
     </div>

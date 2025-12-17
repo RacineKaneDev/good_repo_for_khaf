@@ -93,14 +93,8 @@ const CompanyOpportunitiesDetails = ({ companyId }) => {
                 <h1 className="font-thin text-sm">Opportunités sélectionnées ({cart.length})</h1>
               </div>
 
-               {/* Reuse SelectedOpportunitiesList or map here */}
                <div className="space-y-2 mt-4 max-h-[50vh] overflow-y-auto">
-                   {cart.map(item => (
-                       <div key={item.id} className="text-sm border-b pb-2">
-                           <p className="font-semibold">{item.name}</p>
-                           <p>{item.price} CFA</p>
-                       </div>
-                   ))}
+                   <SelectedOpportunitiesList cart={cart} handleToggleCart={handleToggleCart} />
                </div>
 
               <Button

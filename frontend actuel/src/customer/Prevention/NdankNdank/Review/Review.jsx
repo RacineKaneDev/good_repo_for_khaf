@@ -4,7 +4,20 @@ import RatingCard from './RatingCard';
 import ReviewCard from './ReviewCard';
 
 
-const Review = () => {
+import { useDispatch, useSelector } from 'react-redux';
+import { getCompanyReviews } from '../../../../Redux/Review/Action';
+import { useEffect } from 'react';
+
+const Review = ({ companyId }) => {
+  const dispatch = useDispatch();
+  const { review } = useSelector(store => store);
+
+  useEffect(() => {
+    if (companyId) {
+       dispatch(getCompanyReviews(companyId));
+    }
+  }, [dispatch, companyId]);
+
   return (
       <div className='pt-10 flex flex-col lg:flex-row gap-20'>
     <section className='w-full md:w-1/2 lg:w-[40%] space-y-2'>
@@ -18,17 +31,14 @@ const Review = () => {
     
         <div className='mt-10'>
             <div className="space-y-5">
-                {[1,1,1,1,1].map((item) => (
-                    <div className='space-y-5'>
-                        <ReviewCard />
+                {review.reviews.map((item) => (
+                    <div key={item.id} className='space-y-5'>
+                        <ReviewCard item={item} />
                          <Divider />
                     </div>
                 ))}
             </div>
         </div>
-  
-  
-  
     </section>
   </div>
     )

@@ -1,7 +1,12 @@
 import {
-    GET_USER_NOTIFICATIONS_REQUEST, GET_USER_NOTIFICATIONS_SUCCESS, GET_USER_NOTIFICATIONS_FAILURE
+    GET_USER_NOTIFICATIONS_REQUEST, GET_USER_NOTIFICATIONS_SUCCESS, GET_USER_NOTIFICATIONS_FAILURE,
+    ADD_NOTIFICATION // Added import
 } from "./actionTypes";
 import { api } from "../../config/api";
+
+export const addNotification = (notification) => {
+    return { type: ADD_NOTIFICATION, payload: notification };
+};
 
 export const getUserNotifications = () => async (dispatch) => {
     dispatch({ type: GET_USER_NOTIFICATIONS_REQUEST });

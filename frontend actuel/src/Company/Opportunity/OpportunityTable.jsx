@@ -9,6 +9,9 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCompanyOpportunities } from '../../Redux/Opportunity/Action';
+import { useEffect } from 'react';
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -32,6 +35,15 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const OpportunityTable = () => {
+    const dispatch = useDispatch();
+    const { opportunity, auth } = useSelector(store => store);
+
+    useEffect(() => {
+        if(auth.user?.id) {
+            dispatch(getCompanyOpportunities(auth.user.id));
+        }
+    }, [auth.user?.id, dispatch]);
+
   return (
     <>
       <h1 className="pb-5 font-bold text-xl">Opportunités</h1>
@@ -50,17 +62,17 @@ const OpportunityTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {[1,1,1,1].map((item) => (
+            {opportunity.opportunities.map((item) => (
               <StyledTableRow key={item.id}>
                 <StyledTableCell component="th" scope="row">
                   <div className="flex gap-1 flex-wrap">
-                    <img className="w-20 rounded-md" src="https://static.wixstatic.com/media/e6fb96_9b9b4f6c0026482f8548a20db60a68ff~mv2.jpg/v1/fit/w_2500,h_1330,al_c/e6fb96_9b9b4f6c0026482f8548a20db60a68ff~mv2.jpg" alt="" />
+                    <img className="w-20 rounded-md" src={item.image || "https://static.wixstatic.com/media/e6fb96_9b9b4f6c0026482f8548a20db60a68ff~mv2.jpg/v1/fit/w_2500,h_1330,al_c/e6fb96_9b9b4f6c0026482f8548a20db60a68ff~mv2.jpg"} alt="" />
                   </div>
                 </StyledTableCell>
-                <StyledTableCell align="right">Ouverture boutique cosmetique</StyledTableCell>
+                <StyledTableCell align="right">{item.title}</StyledTableCell>
                 <StyledTableCell align="right">
                   {" "}
-                  2000 fr CFA
+                  {item.amount || item.price} fr CFA
                 </StyledTableCell>
                 {/* <StyledTableCell align="right">
                   {" "}
