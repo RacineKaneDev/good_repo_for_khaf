@@ -10,9 +10,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NotificationService {
     private final NotificationRepository notificationRepository;
+    private final org.springframework.messaging.simp.SimpMessagingTemplate messagingTemplate;
 
     public Notification createNotification(Notification notification) {
-        return notificationRepository.save(notification);
+        Notification savedNotification = notificationRepository.save(notification);
+        messagingTemplate.convertAndSendToUser(
+                savedNotification.getUser().getId().toString(),
+                "/notification/private",
+                savedNotification
+        );
+        return savedNotification;
     }
     
     public List<Notification> getNotificationsByUserId(Long userId) {
