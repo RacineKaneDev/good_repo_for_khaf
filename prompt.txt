@@ -1,0 +1,210 @@
+Tu as accès à 4 projets dans ce workspace :
+
+1️⃣ backend-reference
+
+Application complète issue d’un tutoriel
+
+À utiliser UNIQUEMENT comme référence fonctionnelle et architecturale
+
+NE PAS copier les noms de services, endpoints, DTO, fonctions ou variables
+
+2️⃣ backend-actuel (MON BACKEND)
+
+Architecture microservices Spring Boot
+
+Fonctionnement voulu IDENTIQUE au backend-reference
+
+9 microservices au total
+
+7 déjà fonctionnels
+
+2 microservices incomplets :
+
+review
+
+notifications
+
+Build avec JIB (❌ pas de Dockerfile)
+
+Config YAML existante (mail présent mais valeur vide)
+
+3️⃣ frontend-reference
+
+Front React entièrement intégré
+
+Redux (slices, thunks, services)
+
+API services centralisés
+
+À utiliser comme MODÈLE d’architecture et de logique d’intégration
+
+NE PAS copier les noms des APIs ni des entités
+
+4️⃣ frontend-actuel (MON FRONT)
+
+UI complète avec dummy data
+
+Même écrans et même logique fonctionnelle que frontend-reference
+
+Noms, titres, images personnalisés
+
+AUCUNE intégration backend encore faite
+
+🎯 OBJECTIF GLOBAL
+
+Obtenir une application FULLSTACK fonctionnelle, identique à celle du tutoriel (en termes de comportement et de logique), mais implémentée strictement avec :
+
+mes noms de microservices
+
+mes endpoints backend
+
+mes DTO
+
+mes écrans frontend
+
+toute l’application doit être en français
+
+📌 RÈGLES ABSOLUES
+
+NE PAS copier les noms du backend-reference ou frontend-reference
+
+Utiliser STRICTEMENT les noms existants dans mes projets
+
+Ne PAS modifier ce qui fonctionne déjà
+
+Ne PAS inventer de logique métier
+
+Respecter JIB (pas de Dockerfile)
+
+Respecter les fichiers YAML existants
+
+🧩 INSTRUCTION IMPORTANTE (MODE D’EXÉCUTION)
+
+Tu dois faire tout le travail d’un seul coup :
+
+backend
+
+frontend
+
+intégration complète
+
+sécurité
+
+menus
+
+dashboards
+
+notifications
+
+NE PAS demander de confirmation entre-temps
+
+Une fois TOUT terminé, tu dois fournir :
+
+Un résumé concret et clair de tout ce que tu as fait
+
+Toutes les commandes étape par étape pour :
+
+lancer les conteneurs (backend, frontend, base de données)
+
+configurer la base de données
+
+lancer le backend
+
+lancer le frontend
+
+tester l’application complète et vérifier que tout fonctionne
+
+🧩 SPÉCIFICITÉS FONCTIONNELLES ET MÉTIERS (TRÈS IMPORTANT)
+🔐 RÔLES ET DASHBOARDS
+
+Il existe deux rôles principaux :
+
+1️⃣ company_admin
+
+Doit avoir accès au menu company_dashboard
+
+Ce menu lui permet de naviguer vers son dashboard
+
+Il gère uniquement la partie financement et réservation d’entretien
+
+Il NE DOIT JAMAIS voir :
+
+Prévention
+
+Dashboard Prévention
+
+Ces fonctionnalités doivent être totalement cachées (menu + routes + UI)
+
+2️⃣ NN_admin (UTILISATEUR UNIQUE)
+
+Doit être créé / enregistré automatiquement dans l’application
+
+Doit avoir accès à un menu NN_dashboard
+
+Ce menu lui permet d’accéder à son dashboard
+
+Il possède presque le même panel que le company_admin
+
+EN PLUS, il a accès aux fonctionnalités spécifiques :
+
+Prévention
+
+Dashboard Prévention
+
+Ces fonctionnalités sont strictement réservées au rôle NN_admin
+
+Elles sont liées à la gestion des alertes et de la prévention
+
+Elles n’ont aucun lien avec le financement de projets locaux
+
+🧭 RÈGLES DE VISIBILITÉ
+
+company_admin :
+
+voit company_dashboard
+
+ne voit jamais Prévention ni Dashboard Prévention
+
+NN_admin :
+
+voit NN_dashboard
+
+voit Prévention et Dashboard Prévention
+
+🧩 AUTRES SPÉCIFICITÉS TECHNIQUES
+
+Finaliser les microservices review et notifications
+
+Implémenter tous les Feign clients manquants
+
+Implémenter RabbitMQ
+
+Compléter la configuration mail avec : racinekanedev@gmail.com
+
+Connecter chaque écran du frontend à MES APIs backend
+
+Supprimer toutes les dummy data
+
+Intégrer Cloudinary :
+
+cloud_name = dqfzvycxf
+
+upload_preset = ml_default
+
+L’application permet :
+
+la réservation d’entretiens de financement
+
+l’envoi d’alertes liées à la migration clandestine maritime au Sénégal
+
+🛑 PROCESS OBLIGATOIRE
+
+Tout faire en une seule exécution complète
+
+Ne rien laisser incomplet
+
+À la fin :
+
+résumé clair des changements
+
+toutes les commandes nécessaires pour tester l’application de bout en bout

@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: payment-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/paymenttb_NN
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+
+server:
+  port: 5006
+
+razorpay:
+  api:
+    key: ""
+    secret: ""
+
+stripe:
+  api:
+    key: ""
+
+
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eurekaserver:8070/eureka/
+  instance:
+    prefer-ip-address: true

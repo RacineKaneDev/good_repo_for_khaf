@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: category-service
+  datasource:
+    url: jdbc:mysql://localhost/categorydb_NN
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"   # expose tous les endpoints Actuator, y compris /prometheus
+  endpoint:
+    prometheus:
+      access: read_only
+
+
+logging:
+  pattern:
+    console: '{"timestamp":"%d{yyyy-MM-dd HH:mm:ss}","level":"%p","thread":"%t","logger":"%c","message":"%m"}'
+
+
+opentracing:
+  jaeger:
+    udp-sender:
+      host: jaeger
+      port: 14250
+    sampler:
+      type: const
+      param: 1
+
+
+server:
+  port: 5003
+
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eurekaserver:8070/eureka/
+  instance:
+    prefer-ip-address: true

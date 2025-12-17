@@ -1,0 +1,486 @@
+services:
+
+  userdb:
+    image: mysql
+    ports:
+      - "3301:3306"
+    container_name: userdb
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: userdb_NN
+    networks:
+      - racine
+
+
+  categorydb:
+    image: mysql
+    ports:
+      - "3302:3306"
+    container_name: categorydb
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: categorydb_NN
+    networks:
+      - racine
+
+
+  opportunitydb:
+    image: mysql
+    ports:
+      - "3303:3306"
+    container_name: opportunitydb
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: financingoppdb_NN
+    networks:
+      - racine
+
+
+  companydb:
+    image: mysql
+    ports:
+      - "3304:3306"
+    container_name: companydb
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: companydb_NN
+    networks:
+      - racine
+
+
+
+  bookingdb:
+    image: mysql
+    ports:
+      - "3305:3306"
+    container_name: bookingdb
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: interviewbookingdb_NN
+    networks:
+      - racine
+
+
+
+
+  paymentdb:
+    image: mysql
+    ports:
+      - "3307:3306"
+    container_name: paymentdb
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: paymenttb_NN
+    networks:
+      - racine
+
+
+  preventiondb:
+    image: mysql
+    ports:
+      - "3308:3306"
+    container_name: preventiondb
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: preventiondb_NN
+    networks:
+      - racine
+
+
+
+  eurekaserver:
+    image: "racinekane/ndankndank-eurekaserver:v2"
+    ports:
+      - "8070:8070"
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail --silent  eurekaserver:8070/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    container_name: eurekaserver
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - racine
+
+
+
+  user:
+    image: "racinekane/ndankndank-user:v2"
+    ports:
+      - "5001:5001"
+    healthcheck:
+      test: "curl --fail --silent  user:5001/actuator/health || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
+    container_name: user
+    depends_on:
+      userdb:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "user-service"
+      SPRING_DATASOURCE_URL: jdbc:mysql://userdb:3306/userdb_NN
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+      KEYCLOAK_SERVER_URL: http://keycloak:8080
+      KEYCLOAK_REALM: master
+      KEYCLOAK_CLIENT_ID: ndankndank-client
+      KEYCLOAK_CLIENT_SECRET: 7NAiHfwDZq61jBsYLzCToLcOFulv29VF
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - racine
+
+
+
+  category:
+    image: "racinekane/ndankndank-category:v2"
+    ports:
+      - "5003:5003"
+    healthcheck:
+      test: "curl --fail --silent  category:5003/actuator/health || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    container_name: category
+    depends_on:
+      categorydb:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "category-service"
+      SPRING_DATASOURCE_URL: jdbc:mysql://categorydb:3306/categorydb_NN
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - racine
+
+
+  financing-opportunity:
+    image: "racinekane/ndankndank-opportunity:v2"
+    ports:
+      - "5004:5004"
+    healthcheck:
+      test: "curl --fail --silent  financing-opportunity:5004/actuator/health || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    container_name: financing-opportunity
+    depends_on:
+      opportunitydb:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "financing-opportunity"
+      SPRING_DATASOURCE_URL: jdbc:mysql://opportunitydb:3306/financingoppdb_NN
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - racine
+
+
+
+  financing-company:
+    image: "racinekane/ndankndank-company:v2"
+    ports:
+      - "5002:5002"
+    healthcheck:
+      test: "curl --fail --silent  financing-company:5002/actuator/health || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    container_name: financing-company
+    depends_on:
+      companydb:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "financing-company-service"
+      SPRING_DATASOURCE_URL: jdbc:mysql://companydb:3306/companydb_NN
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - racine
+
+
+
+  interview-booking:
+    image: "racinekane/ndankndank-booking:v2"
+    ports:
+      - "5005:5005"
+    healthcheck:
+      test: "curl --fail --silent  interview-booking:5005/actuator/health || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    container_name: interview-booking
+    depends_on:
+      bookingdb:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "interview-booking"
+      SPRING_DATASOURCE_URL: jdbc:mysql://bookingdb:3306/interviewbookingdb_NN
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - racine
+
+
+
+
+  payment:
+    image: "racinekane/ndankndank-payment:v2"
+    ports:
+      - "5006:5006"
+    healthcheck:
+      test: "curl --fail --silent  payment:5006/actuator/health || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    container_name: payment
+    depends_on:
+      paymentdb:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "payment-service"
+      SPRING_DATASOURCE_URL: jdbc:mysql://paymentdb:3306/paymenttb_NN
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - racine
+
+
+
+
+  prevention:
+    image: "racinekane/ndankndank-prevention:v2"
+    ports:
+      - "5007:5007"
+    healthcheck:
+      test: "curl --fail --silent  prevention:5007/actuator/health || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    container_name: prevention
+    depends_on:
+      preventiondb:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "prevention-service"
+      SPRING_DATASOURCE_URL: jdbc:mysql://preventiondb:3306/preventiondb_NN
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - racine
+
+
+
+
+
+
+  gatewayserver:
+    image: "racinekane/ndankndank-gatewayserver:v2"
+    ports:
+      - "5000:5000"
+    healthcheck:
+      test: "curl --fail --silent  gatewayserver:5000/actuator/health || exist 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    container_name: gatewayserver
+    depends_on:
+      eurekaserver:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "gateway-server"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - racine
+
+
+
+
+
+  postgres:
+    image: postgres:15
+    container_name: keycloak-postgres
+    environment:
+      - POSTGRES_DB=keycloak
+      - POSTGRES_USER=keycloak
+      - POSTGRES_PASSWORD=keycloak
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - racine
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    restart: always
+
+  keycloak:
+      image: quay.io/keycloak/keycloak:26.0.0
+      container_name: keycloak
+      command: start-dev
+      environment:
+        - KC_DB=postgres
+        - KC_DB_URL=jdbc:postgresql://postgres:5432/keycloak
+        - KC_DB_USERNAME=keycloak
+        - KC_DB_PASSWORD=keycloak
+        - KC_BOOTSTRAP_ADMIN_USERNAME=admin
+        - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
+      ports:
+        - "8080:8080"
+      depends_on:
+        - postgres
+      volumes:
+        - keycloak_data:/opt/keycloak/data
+      networks:
+        - racine
+      deploy:
+        resources:
+          limits:
+            memory: 700m
+      restart: always
+
+
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ../../infrastructure/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - racine
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+
+  grafana:
+      image: grafana/grafana:latest
+      ports:
+        - "3000:3000"
+      depends_on:
+        - prometheus
+      networks:
+        - racine
+      deploy:
+        resources:
+          limits:
+            memory: 700m
+
+
+volumes:
+    postgres_data:
+    keycloak_data:
+
+
+
+
+networks:
+  racine:
+    external: true

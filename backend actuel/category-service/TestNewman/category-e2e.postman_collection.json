@@ -1,0 +1,16 @@
+{
+  "info": {
+    "name": "Category E2E Tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get Categories by Company",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:5003/api/categories/company/1"
+      },
+      "response": []
+    }
+  ]
+}
