@@ -1,0 +1,191 @@
+version: '3.8'
+
+services:
+  # Infrastructure
+  rabbitmq:
+    image: rabbitmq:4.0-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - ndank-network
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0.7
+    ports:
+      - 7080:8080
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+    command:
+      - "start-dev"
+    networks:
+      - ndank-network
+
+  eurekaserver:
+    image: racinekane/ndankndank-eurekaserver:v2
+    build: 
+        context: ./backend actuel/eureka-server 2
+        dockerfile: Dockerfile
+    ports:
+      - "8070:8070"
+    networks:
+      - ndank-network
+    container_name: eurekaserver
+
+  gatewayserver:
+    image: racinekane/ndankndank-gateway:v2
+    ports:
+      - "5000:5000"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+    depends_on:
+      - eurekaserver
+    networks:
+      - ndank-network
+    container_name: gatewayserver
+
+  # Databases
+  userdb:
+    image: mysql
+    environment: {MYSQL_ROOT_PASSWORD: root, MYSQL_DATABASE: userdb_NN}
+    networks: [ndank-network]
+  companydb:
+    image: mysql
+    environment: {MYSQL_ROOT_PASSWORD: root, MYSQL_DATABASE: companydb_NN}
+    networks: [ndank-network]
+  bookingdb:
+    image: mysql
+    environment: {MYSQL_ROOT_PASSWORD: root, MYSQL_DATABASE: interviewbookingdb_NN}
+    networks: [ndank-network]
+  categorydb:
+    image: mysql
+    environment: {MYSQL_ROOT_PASSWORD: root, MYSQL_DATABASE: categorydb_NN}
+    networks: [ndank-network]
+  paymentdb:
+    image: mysql
+    environment: {MYSQL_ROOT_PASSWORD: root, MYSQL_DATABASE: paymentdb_NN}
+    networks: [ndank-network]
+  preventiondb:
+    image: mysql
+    environment: {MYSQL_ROOT_PASSWORD: root, MYSQL_DATABASE: preventiondb_NN}
+    networks: [ndank-network]
+  reviewdb:
+    image: mysql
+    environment: {MYSQL_ROOT_PASSWORD: root, MYSQL_DATABASE: reviewdb_NN}
+    networks: [ndank-network]
+  notificationdb:
+    image: mysql
+    environment: {MYSQL_ROOT_PASSWORD: root, MYSQL_DATABASE: notificationdb_NN}
+    networks: [ndank-network]
+  opportunitydb:
+    image: mysql
+    environment: {MYSQL_ROOT_PASSWORD: root, MYSQL_DATABASE: financingopportunitydb_NN}
+    networks: [ndank-network]
+
+  # Microservices
+  user-service:
+    image: racinekane/ndankndank-user:v2
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://userdb:3306/userdb_NN
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+    depends_on: [userdb, eurekaserver]
+    networks: [ndank-network]
+
+  financing-company-service:
+    image: racinekane/ndankndank-company:v2
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://companydb:3306/companydb_NN
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+    depends_on: [companydb, eurekaserver]
+    networks: [ndank-network]
+
+  interview-booking:
+    image: racinekane/ndankndank-booking:v2
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://bookingdb:3306/interviewbookingdb_NN
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+      SPRING_RABBITMQ_HOST: rabbitmq
+    depends_on: [bookingdb, eurekaserver, rabbitmq]
+    networks: [ndank-network]
+
+  review-service:
+    image: racinekane/ndankndank-review:v1
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://reviewdb:3306/reviewdb_NN
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+    depends_on: [reviewdb, eurekaserver]
+    networks: [ndank-network]
+
+  notifications-service:
+    image: racinekane/ndankndank-notifications:v1
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://notificationdb:3306/notificationdb_NN
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+      SPRING_RABBITMQ_HOST: rabbitmq
+    depends_on: [notificationdb, eurekaserver, rabbitmq]
+    networks: [ndank-network]
+
+  category-service:
+    image: racinekane/ndankndank-category:v2
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://categorydb:3306/categorydb_NN
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+    depends_on: [categorydb, eurekaserver]
+    networks: [ndank-network]
+
+  payment-service:
+    image: racinekane/ndankndank-payment:v2
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://paymentdb:3306/paymentdb_NN
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+    depends_on: [paymentdb, eurekaserver]
+    networks: [ndank-network]
+
+  prevention-service:
+    image: racinekane/ndankndank-prevention:v2
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://preventiondb:3306/preventiondb_NN
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+    depends_on: [preventiondb, eurekaserver]
+    networks: [ndank-network]
+
+  financing-opportunity:
+    image: racinekane/ndankndank-opportunity:v2
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://opportunitydb:3306/financingopportunitydb_NN
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+    depends_on: [opportunitydb, eurekaserver]
+    networks: [ndank-network]
+
+  # Frontend
+  frontend:
+    build: 
+      context: ./frontend actuel
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - ndank-network
+
+networks:
+  ndank-network:
+    driver: bridge

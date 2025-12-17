@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository bookingRepository;
+    private final com.racinekanedev.messaging.NotificationEventProducer notificationEventProducer;
 
     @Override
     public Booking createBooking(bookingRequest booking, UserDTO user, CompanyDTO company, Set<OpportunityDTO> opportunityDTOSet) throws Exception {
@@ -53,7 +54,22 @@ public class BookingServiceImpl implements BookingService {
 
 
 
-        return bookingRepository.save(newBooking);
+        newBooking.setTotalPrice(totalPrice);
+        Booking saved = bookingRepository.save(newBooking);
+        
+        try {
+            com.racinekanedev.modal.Notification notif = new com.racinekanedev.modal.Notification();
+            notif.setBookingId(saved.getId());
+            notif.setCompanyId(company.getId());
+            notif.setUserId(user.getId());
+            notif.setType("BOOKING_CREATED");
+            notif.setDescription("New booking for " + company.getName());
+            notificationEventProducer.sendNotification(notif);
+        } catch (Exception e) {
+            e.printStackTrace(); // Non-blocking
+        }
+        
+        return saved;
     }
 
 

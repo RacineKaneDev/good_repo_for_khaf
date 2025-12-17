@@ -13,6 +13,7 @@ import { NotFound } from './customer/Not Found/NotFound';
 import CompanyDashboard from './Company/CompanyDashboard.jsx';
 import CustomerRoutes from './Routes/CustomerRoutes.jsx';
 import CustomerPreventionRoutes from './Routes/CustomerPreventionRoutes.jsx';
+import AdminDashboard from './Admin/AdminDashboard';
 
 
 
@@ -21,22 +22,17 @@ import CustomerPreventionRoutes from './Routes/CustomerPreventionRoutes.jsx';
 function App() {
   return (
     <ThemeProvider theme={greenTheme}>
-      
+
       {/* <Home /> */}
-     {/* <CompanyDetails /> */}
-     {/* <Bookings /> */}
-     {/* <Notifications /> */}
+      {/* <CompanyDetails /> */}
+      {/* <Bookings /> */}
+      {/* <Notifications /> */}
 
-     <Routes>
-          {<Route path="/company-dashboard/*" element={<CompanyDashboard />} />}
-          {/* <Route path="/login" element={<Auth />} /> */}
-          {/* <Route path="/register" element={<Auth />} /> */}
-          {/* <Route path="/become-partner" element={<BecomePartner />} /> */}
-          {/* <Route path="/admin/*" element={<AdminDashboard/>} /> */}
-          {/* <Route path="*" element={<CustomerRoutes />} /> */}
-
-          <Route path='*' element={<CustomerRoutes />} />
-          <Route path="/prevention/*" element={<CustomerPreventionRoutes />} />
+      <Routes>
+        <Route path="/company-dashboard/*" element={<CompanyDashboard />} />
+        <Route path="/admin/*" element={<AdminDashboard />} />
+        <Route path='*' element={<CustomerRoutes />} />
+        <Route path="/prevention/*" element={<CustomerPreventionRoutes />} />
       </Routes>
     </ThemeProvider>
   );
