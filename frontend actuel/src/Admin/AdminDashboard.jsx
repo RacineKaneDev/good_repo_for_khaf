@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import AdminRoutes from '../../Routes/AdminRoutes';
-import DrawerList from '../components/DrawerList';
+import AdminRoutes from '../Routes/AdminRoutes';
+import DrawerList from './components/DrawerList';
 import { Box, CssBaseline, Drawer, Toolbar, List, Divider, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 
 const drawerWidth = 240;

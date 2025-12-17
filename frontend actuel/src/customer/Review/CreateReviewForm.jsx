@@ -1,55 +1,65 @@
-import React from 'react'
-import { Box, Button, InputLabel, Rating, TextField } from '@mui/material'
-import { useFormik } from 'formik'
+import React, { useState } from 'react'
+import { Button, TextField, Rating, Box, Typography } from '@mui/material'
+import { useDispatch } from 'react-redux';
+import { createReview } from '../../Redux/Review/Action';
 
-
-const CreateReviewForm = () => {
-
-   const formik = useFormik({
-    initialValues: {
-      reviewText: "",
-      reviewRating: 0,
-    },
-    onSubmit: (values) => {
-      console.log("Form Submitted:", values);
-    }
+const CreateReviewForm = ({ companyId }) => {
+  const dispatch = useDispatch();
+  const [formData, setFormData] = useState({
+      title: "",
+      description: "",
+      rating: 0
   });
 
-  return (
-    <Box
-      component="form"
-      onSubmit={formik.handleSubmit}
-      sx={{ mt: 3 }}
-      className="space-y-5 w-full lg:w-1/2"
-    >
-      <TextField
-        fullWidth
-        id="reviewText"
-        name="reviewText"
-        label="Review Text"
-        variant="outlined"
-        multiline
-        rows={4}
-        value={formik.values.reviewText}
-        onChange={formik.handleChange}
-      />
+  const handleChange = (e) => {
+      setFormData({...formData, [e.target.name]: e.target.value});
+  };
 
-      <div className="space-y-2">
-        <InputLabel>Appréciation</InputLabel>
-        <Rating
-          id="reviewRating"
-          name="reviewRating"
-          value={formik.values.reviewRating}
-          onChange={(event, newValue) =>
-            formik.setFieldValue("reviewRating", newValue)
-          }
-          precision={0.5}
+  const handleRatingChange = (event, newValue) => {
+      setFormData({...formData, rating: newValue});
+  };
+
+  const handleSubmit = (e) => {
+      e.preventDefault();
+      dispatch(createReview({
+          ...formData,
+          companyId: Number(companyId)
+      }));
+      // Reset or show success
+      setFormData({title:"", description:"", rating:0});
+      alert("Avis envoyé !");
+  };
+
+  return (
+    <div className='flex flex-col gap-3 p-5 border rounded-md md:w-[30rem]'>
+       <Typography component="legend">Notez cette companie</Typography>
+       <Rating
+          name="simple-controlled"
+          value={formData.rating}
+          onChange={handleRatingChange}
         />
-      </div>
-      <Button color="primary" variant="contained" type="submit">
-        Soumettre Avis
-      </Button>
-    </Box>
+        <form onSubmit={handleSubmit} className="space-y-3">
+             <TextField
+                fullWidth
+                label="Titre"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                variant="outlined"
+             />
+             <TextField
+                fullWidth
+                label="Description"
+                name="description"
+                multiline
+                rows={4}
+                value={formData.description}
+                onChange={handleChange}
+                variant="outlined"
+             />
+             <Button type="submit" variant="contained" color="success">Soumettre</Button>
+        </form>
+    </div>
   )
 }
 

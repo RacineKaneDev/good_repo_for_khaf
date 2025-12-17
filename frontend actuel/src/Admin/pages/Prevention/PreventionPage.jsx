@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { api } from '../../../config/api';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllPreventions } from '../../../Redux/Prevention/Action';
 
 const PreventionPage = () => {
-    const [alerts, setAlerts] = useState([]);
+    const dispatch = useDispatch();
+    const { preventions, isLoading } = useSelector(state => state.prevention);
 
     useEffect(() => {
-        // Fetch all preventions/alerts for NN_admin
-        // Adjust endpoint based on prevention-service logic
-        api.get('/api/preventions/all') 
-           .then(res => setAlerts(res.data))
-           .catch(err => console.log(err));
-    }, []);
+        dispatch(getAllPreventions());
+    }, [dispatch]);
+    
+    // Use Redux state preventions instead of local alerts state
+    // Replace alerts.map with preventions.map in JSX below (I will use multi-replace or just rewrite the component slightly if needed, but here replace content)
+    const alerts = preventions;
 
     return (
         <Box>

@@ -7,6 +7,8 @@ import Bookings from '../customer/Bookings/Bookings';
 import Notifications from '../customer/Notifications/Notifications';
 import { NotFound } from '../customer/Not Found/NotFound';
 import Navbar from  '../customer/Navbar/Navbar';
+import LoginForm from '../customer/Auth/LoginForm';
+import RegisterForm from '../customer/Auth/RegisterForm';
 
 
 
@@ -22,6 +24,8 @@ const CustomerRoutes = () => {
     <Route path='/company/:id' element={<CompanyDetails/>}/>
     <Route path='/bookings' element={<Bookings/>}/>
     <Route path='/notifications' element={<Notifications/>}/>
+    <Route path='/login' element={<LoginForm/>}/>
+    <Route path='/register' element={<RegisterForm/>}/>
     <Route path='*' element={<NotFound />} />
   </Routes>
   
