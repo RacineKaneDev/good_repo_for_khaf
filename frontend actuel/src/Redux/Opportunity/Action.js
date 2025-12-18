@@ -7,8 +7,10 @@ import { api } from "../../config/api";
 export const createOpportunity = (opportunityData) => async (dispatch) => {
     dispatch({ type: CREATE_OPPORTUNITY_REQUEST });
     try {
-        const response = await api.post('/api/opportunities', opportunityData, {
-            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
+        const { companyId, categoryId, ...data } = opportunityData;
+        const response = await api.post('/api/financing-opportunity', data, {
+            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
+            params: { companyId, categoryId }
         });
         dispatch({ type: CREATE_OPPORTUNITY_SUCCESS, payload: response.data });
     } catch (error) {

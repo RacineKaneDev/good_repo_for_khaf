@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Button, TextField, Typography } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../../Redux/Auth/Action';
+import { loginUser } from '../../Redux/Auth/action';
 import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Button, TextField, Typography, MenuItem, Select, FormControl, InputLabel } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux';
-import { registerUser } from '../../Redux/Auth/Action';
+import { registerUser } from '../../Redux/Auth/action';
 import { useNavigate } from 'react-router-dom';
 
 const RegisterForm = () => {

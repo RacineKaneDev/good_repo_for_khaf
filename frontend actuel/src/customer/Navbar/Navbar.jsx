@@ -4,7 +4,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { getUser, logout } from '../../Redux/Auth/Action';
+import { getUser, logout } from '../../Redux/Auth/action';
 
 const Navbar = () => {
     const dispatch = useDispatch();

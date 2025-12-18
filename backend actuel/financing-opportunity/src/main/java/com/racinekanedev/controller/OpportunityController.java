@@ -36,4 +36,17 @@ public class OpportunityController {
     }
 
 
+    @PostMapping
+    public ResponseEntity<Opportunity> createOpportunity(@RequestBody OpportunityDTO opportunityDTO,
+                                                         @RequestParam Long companyId,
+                                                         @RequestParam Long categoryId) throws Exception {
+        CompanyDTO companyDTO = new CompanyDTO();
+        companyDTO.setId(companyId);
+
+        CategoryDTO categoryDTO = new CategoryDTO();
+        categoryDTO.setId(categoryId);
+
+        Opportunity createdOpportunity = opportunityService.createOpportunity(companyDTO, opportunityDTO, categoryDTO);
+        return ResponseEntity.ok(createdOpportunity);
+    }
 }

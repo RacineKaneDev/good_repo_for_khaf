@@ -14,8 +14,10 @@ import CompanyDashboard from './Company/CompanyDashboard.jsx';
 import CustomerRoutes from './Routes/CustomerRoutes.jsx';
 import CustomerPreventionRoutes from './Routes/CustomerPreventionRoutes.jsx';
 import AdminDashboard from './Admin/AdminDashboard';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import useNotificationWebsoket from './util/useNotificationWebsoket';
+import { getUser } from './Redux/Auth/action';
+import { useEffect } from 'react';
 
 
 
@@ -23,7 +25,14 @@ import useNotificationWebsoket from './util/useNotificationWebsoket';
 
 function App() {
   const { auth } = useSelector(store => store);
+  const dispatch = useDispatch();
   useNotificationWebsoket(auth.user?.id, 'user');
+
+  useEffect(() => {
+    if (localStorage.getItem("jwt")) {
+      dispatch(getUser(localStorage.getItem("jwt")));
+    }
+  }, [auth.jwt]);
 
   return (
     <ThemeProvider theme={greenTheme}>

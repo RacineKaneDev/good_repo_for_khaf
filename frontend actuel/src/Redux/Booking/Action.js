@@ -8,8 +8,9 @@ import { api } from "../../config/api";
 export const createBooking = (bookingData) => async (dispatch) => {
     dispatch({ type: CREATE_BOOKING_REQUEST });
     try {
-        const response = await api.post('/api/bookings', bookingData, {
-            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
+        const response = await api.post('/api/interview-booking', bookingData, {
+            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
+            params: { companyId: bookingData.companyId }
         });
         dispatch({ type: CREATE_BOOKING_SUCCESS, payload: response.data });
     } catch (error) {
@@ -17,10 +18,10 @@ export const createBooking = (bookingData) => async (dispatch) => {
     }
 };
 
-export const getUserBookings = (userId) => async (dispatch) => {
+export const getUserBookings = () => async (dispatch) => {
     dispatch({ type: GET_USER_BOOKINGS_REQUEST });
     try {
-        const response = await api.get(`/api/bookings/customer/${userId}`, {
+        const response = await api.get(`/api/interview-booking/customer`, {
             headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
         });
         dispatch({ type: GET_USER_BOOKINGS_SUCCESS, payload: response.data });
@@ -32,7 +33,7 @@ export const getUserBookings = (userId) => async (dispatch) => {
 export const getCompanyBookings = () => async (dispatch) => {
     dispatch({ type: GET_COMPANY_BOOKINGS_REQUEST });
     try {
-        const response = await api.get(`/api/bookings/company`, {
+        const response = await api.get(`/api/interview-booking/company`, {
             headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
         });
         dispatch({ type: GET_COMPANY_BOOKINGS_SUCCESS, payload: response.data });
