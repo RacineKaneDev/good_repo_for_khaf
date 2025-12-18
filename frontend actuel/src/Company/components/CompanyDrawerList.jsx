@@ -1,5 +1,6 @@
 import React from 'react'
 import DrawerList from '../../Company Admin/DrawerList';
+import { useSelector } from 'react-redux';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import InventoryIcon from '@mui/icons-material/Inventory';
@@ -103,7 +104,17 @@ const menu2 = [
 ];
 
 const CompanyDrawerList = ({toggleDrawer}) => {
-  return <DrawerList menu={menu} menu2={menu2} toggleDrawer={toggleDrawer} />;
+  const { auth } = useSelector(store => store);
+  const userRole = auth.user?.role;
+
+  const filteredMenu = menu.filter(item => {
+    if (item.name === "PreventionDashboard" || item.name === "Préventions" || item.name === "PreventionNotifications") {
+      return userRole === "NN_ADMIN";
+    }
+    return true;
+  });
+
+  return <DrawerList menu={filteredMenu} menu2={menu2} toggleDrawer={toggleDrawer} />;
 }
 
 export default CompanyDrawerList
