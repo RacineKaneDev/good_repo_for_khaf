@@ -9,6 +9,7 @@ import { NotFound } from '../customer/Not Found/NotFound';
 import Navbar from  '../customer/Navbar/Navbar';
 import LoginForm from '../customer/Auth/LoginForm';
 import RegisterForm from '../customer/Auth/RegisterForm';
+import BecomePartner from '../customer/pages/Become Partner/BecomePartner';
 
 
 
@@ -26,6 +27,7 @@ const CustomerRoutes = () => {
     <Route path='/notifications' element={<Notifications/>}/>
     <Route path='/login' element={<LoginForm/>}/>
     <Route path='/register' element={<RegisterForm/>}/>
+    <Route path='/become-partner' element={<BecomePartner/>}/>
     <Route path='*' element={<NotFound />} />
   </Routes>
   
