@@ -52,6 +52,18 @@ spring:
               predicates:
                 - Path= /api/preventions/** , /api/preventions/companyAdmin"
 
+
+            - id: REVIEW-SERVICE
+              uri: lb://review-service
+              predicates:
+                - Path= /api/reviews/**
+
+
+            - id: NOTIFICATION-SERVICE
+              uri: lb://notifications-service
+              predicates:
+                - Path= /api/notifications/**
+
   security:
     oauth2:
       resource server:
