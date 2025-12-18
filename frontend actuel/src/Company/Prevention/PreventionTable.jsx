@@ -40,15 +40,10 @@ const PreventionTable = () => {
         dispatch(getAllPreventions());
     }, [dispatch]);
 
-    const handleSendReport = async () => {
+    const handleSendReport = async (id) => {
         try {
-            await api.post('/api/notifications/send-report', "racinekanedev@gmail.com", {
-                 headers: { 
-                     Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-                     'Content-Type': 'text/plain' 
-                 }
-            });
-            alert("Rapport envoyé à racinekanedev@gmail.com");
+            await api.post(`/api/preventions/companyAdmin/${id}/send-mail`, {});
+            alert("Rapport envoyé à la police maritime.");
         } catch (error) {
             console.error("Erreur lors de l'envoi du rapport", error);
             alert("Erreur lors de l'envoi du rapport");
@@ -117,7 +112,7 @@ const PreventionTable = () => {
 
                 {/* POLICE */}
                 <StyledTableCell align="right">
-                  <Button variant="contained" color="secondary" onClick={handleSendReport}>
+                  <Button variant="contained" color="secondary" onClick={() => handleSendReport(item.id)}>
                     Envoyer rapport prévention
                   </Button>
                 </StyledTableCell>

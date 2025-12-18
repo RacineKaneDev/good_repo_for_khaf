@@ -137,12 +137,14 @@ public class PreventionServiceImpl implements PreventionService {
 
             document.add(new Paragraph("🚨 Rapport de Prévention fait par:"));
             document.add(new Paragraph("Nom: " + prevention.getFullName()));
+            document.add(new Paragraph("Email: " + prevention.getEmail()));
             document.add(new Paragraph("Adresse: " + prevention.getAddress()));
             document.add(new Paragraph("Âge: " + prevention.getAge()));
             document.add(new Paragraph("Zone: " + prevention.getZonePrevention()));
             document.add(new Paragraph("Date: " + prevention.getDatePrevention()));
             document.add(new Paragraph("Statut: " + prevention.getStatus()));
             document.add(new Paragraph("Type: " + prevention.getTypePrevention()));
+            document.add(new Paragraph("Observation: " + prevention.getObservation()));
 
             document.close();
             return baos.toByteArray();
