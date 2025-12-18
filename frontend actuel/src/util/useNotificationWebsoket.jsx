@@ -24,7 +24,7 @@ const useNotificationWebsoket = (userId, type) => {
                 () => {
                     // Subscribe to valid topics
                     stompClient.subscribe(
-                        `/notification/${type}/${userId}`,
+                        `/user/${userId}/notification/private`,
                         onMessageRecive,
                         (error) => {
                             console.error("Subscription error:", error);
