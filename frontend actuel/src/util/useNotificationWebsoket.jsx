@@ -52,9 +52,7 @@ const useNotificationWebsoket = (userId, type) => {
         const receivedMessage = JSON.parse(payload.body);
         
         // Dispatch to Redux
-        // dispatch(addNotification(receivedMessage)); 
-        // Note: I need to verify which action to call. The reference used ../Redux/Notifications/action
-        // Current frontend structure has Redux/Prevention/Action.js open?
+        dispatch(addNotification(receivedMessage)); 
     };
 }
 

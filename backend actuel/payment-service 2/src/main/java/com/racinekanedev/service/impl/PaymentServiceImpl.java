@@ -27,6 +27,8 @@ import org.springframework.stereotype.Service;
 public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentRepository paymentRepository;
+    private final com.racinekanedev.payment_service.messaging.BookingEventProducer bookingEventProducer;
+    private final com.racinekanedev.payment_service.messaging.NotificationEventProducer notificationEventProducer;
 
     @Value("${stripe.api.key}")
     private String stripeSecretKey;
@@ -50,6 +52,7 @@ public class PaymentServiceImpl implements PaymentService {
         order.setPaymentMethod(paymentMethod);
         order.setBookingId(booking.getId());
         order.setCompanyId(booking.getCompanyId());
+        order.setUserId(user.getId());
 
         PaymentOrder savedOrder = paymentRepository.save(order);
 
@@ -177,6 +180,15 @@ public class PaymentServiceImpl implements PaymentService {
                     // creer un evenement kafka ou RabbitMq
                     paymentOrder.setStatus(PaymentOrderStatus.SUCCESS);
                     paymentRepository.save(paymentOrder);
+
+                    // Send RabbitMQ Events
+                    bookingEventProducer.sentBookingUpdateEvent(paymentOrder);
+                    notificationEventProducer.sentNotificationEvent(
+                        paymentOrder.getBookingId(),
+                        paymentOrder.getUserId(),
+                        paymentOrder.getCompanyId()
+                    );
+                    
                     return true;
                 }
 
@@ -185,6 +197,13 @@ public class PaymentServiceImpl implements PaymentService {
             else {
                 paymentOrder.setStatus(PaymentOrderStatus.SUCCESS);
                 paymentRepository.save(paymentOrder);
+                 // Send RabbitMQ Events
+                 bookingEventProducer.sentBookingUpdateEvent(paymentOrder);
+                 notificationEventProducer.sentNotificationEvent(
+                     paymentOrder.getBookingId(),
+                     paymentOrder.getUserId(),
+                     paymentOrder.getCompanyId()
+                 );
                 return true;
             }
 
