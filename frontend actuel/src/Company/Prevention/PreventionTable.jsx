@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -10,10 +10,7 @@ import Paper from '@mui/material/Paper';
 import { Button } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllPreventions } from '../../Redux/Prevention/Action';
-
-
-
-
+import { api } from '../../config/api';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -43,32 +40,88 @@ const PreventionTable = () => {
         dispatch(getAllPreventions());
     }, [dispatch]);
 
+    const handleSendReport = async () => {
+        try {
+            await api.post('/api/notifications/send-report', "racinekanedev@gmail.com", {
+                 headers: { 
+                     Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+                     'Content-Type': 'text/plain' 
+                 }
+            });
+            alert("Rapport envoyé à racinekanedev@gmail.com");
+        } catch (error) {
+            console.error("Erreur lors de l'envoi du rapport", error);
+            alert("Erreur lors de l'envoi du rapport");
+        }
+    };
+
   return (
     <>
-      <h1 className="pb-5 font-bold text-xl">Mes Preventions</h1>
+      <h1 className="pb-5 font-bold text-xl">Liste des Préventions</h1>
 
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>Nom de l'entreprise</StyledTableCell>
+              <StyledTableCell>Auteur</StyledTableCell>
+              <StyledTableCell>Zone Prévention</StyledTableCell>
+              <StyledTableCell>Type Prévention</StyledTableCell>
               <StyledTableCell>Date</StyledTableCell>
-              <StyledTableCell>Montant</StyledTableCell>
-              <StyledTableCell align="right">Actions</StyledTableCell>
+              <StyledTableCell>Statut</StyledTableCell>
+              <StyledTableCell align="right">Annuler</StyledTableCell>ce</StyledTableCell>
             </TableRow>
           </TableHead>
 
           <TableBody>
             {prevention.preventions.map((item) => (
               <StyledTableRow key={item.id}>
+
+                {/* PREVENU */}
                 <StyledTableCell component="th" scope="row">
-                  {item.companyName || item.title || "Nom de l'entreprise"}
+                  <ul className="space-y-2">
+                    <div>
+                      <li><strong>Nom :</strong> {item.user?.fullName || "Utilisateur Inconnu"}</li>
+                      <li><strong>Email :</strong> {item.user?.email || "N/A"}</li>
+                      <li><strong>Adresse :</strong> {item.address || "Dakar, Yoff"}</li>
+                      {/* <li><strong>Âge :</strong> {item.age || 28}</li> */}
+                    </div>
+                  </ul>
                 </StyledTableCell>
-                <StyledTableCell>{item.date}</StyledTableCell>
-                <StyledTableCell>{item.amount} fr CFA</StyledTableCell>
+
+                {/* ZONE */}
+                <StyledTableCell className="space-y-2">
+                  <p>{item.zone || "Mbour"}</p>
+                </StyledTableCell>
+
+                {/* TYPE */}
+                <StyledTableCell className="space-y-2">
+                  <p>{item.type || "Sensibilisation"}</p>
+                </StyledTableCell>
+
+                {/* DATE */}
+                <StyledTableCell className="space-y-2">
+                  <p>{item.date || "05/01/2025"}</p>
+                </StyledTableCell>
+
+                {/* STATUT */}
+                <StyledTableCell>
+                  <p className="text-orange-500">{item.status || "En attente"}</p>
+                </StyledTableCell>
+
+                {/* ANNULER */}
                 <StyledTableCell align="right">
-                    <Button variant="outlined" color="primary">Details</Button>
+                  <Button variant="outlined" color="error">
+                    Annuler
+                  </Button>
                 </StyledTableCell>
+
+                {/* POLICE */}
+                <StyledTableCell align="right">
+                  <Button variant="contained" color="secondary" onClick={handleSendReport}>
+                    Envoyer rapport prévention
+                  </Button>
+                </StyledTableCell>
+
               </StyledTableRow>
             ))}
           </TableBody>

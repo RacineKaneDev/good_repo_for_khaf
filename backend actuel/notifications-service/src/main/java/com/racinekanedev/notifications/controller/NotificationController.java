@@ -12,11 +12,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NotificationController {
     private final NotificationService notificationService;
+    private final com.racinekanedev.notifications.email.EmailService emailService;
 
     @GetMapping("/user")
-    public ResponseEntity<List<Notification>> getUserNotifications() { // Simplified, normally gets Principal
-        // For task demo, assuming user 1 or passed via param. 
-        // Or actually, frontend might call this. Let's return hardcoded user 1 notifications for demonstration if no auth context.
+    public ResponseEntity<List<Notification>> getUserNotifications() {
         return ResponseEntity.ok(notificationService.getNotificationsByUserId(1L));
+    }
+
+    @PostMapping("/send-report")
+    public ResponseEntity<String> sendReport(@RequestBody String email) {
+        try {
+            emailService.sendEmail(email, "Rapport de Prévention", "<h1>Rapport de Prévention</h1><p>Ceci est un rapport de prévention généré automatiquement.</p>");
+            return ResponseEntity.ok("Rapport envoyé avec succès");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Erreur lors de l'envoi du rapport: " + e.getMessage());
+        }
     }
 }
