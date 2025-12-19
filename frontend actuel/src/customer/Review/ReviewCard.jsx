@@ -49,9 +49,11 @@ const ReviewCard = ({ item }) => {
           </div>
         </Grid>
       </Grid>
-      <IconButton>
-        <DeleteIcon sx={{ color: red[700] }} />
-      </IconButton>
+      {item?.author === "Racine Kane" && (
+        <IconButton>
+          <DeleteIcon sx={{ color: red[700] }} />
+        </IconButton>
+      )}
     </div>
   );
 };

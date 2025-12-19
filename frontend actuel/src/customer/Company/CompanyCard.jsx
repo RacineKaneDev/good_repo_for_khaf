@@ -2,18 +2,18 @@ import React from 'react'
 import StarIcon from '@mui/icons-material/Star';
 import { useNavigate } from 'react-router-dom';
 
-const CompanyCard = () => {
+const CompanyCard = ({ company }) => {
   const navigate = useNavigate();
   return (
-     <div onClick={() => navigate("/company/2")} className='cursor-pointer'>
+     <div onClick={() => navigate(`/company/${company.id}`)} className='cursor-pointer'>
       <div className="w-56 md:w-80 rounded-md bg-slate-100 ">
         <img
           className="w-full h-[15rem] object-cover rounded-t-md"
-          src= "https://adepme.sn/wp-content/uploads/2020/04/Logoleiste-Senegal-scaled.jpg"
-          alt=""
+          src={company.image}
+          alt={company.name}
         />
         <div className="p-5 space-y-2">
-          <h1 className="font-bold text-xl">GIZ Senegal</h1>
+          <h1 className="font-bold text-xl">{company.name}</h1>
           <div>
             <div className=" text-white text-sm p-1 bg-green-700 rounded-full w-14 flex items-center justify-center gap-1">
               4.5
@@ -21,12 +21,9 @@ const CompanyCard = () => {
             </div>
           </div>
           <p>
-            Nous sommes une organisation de coopération internationale pour le
-            développement durable. Nous sommes pret à vous accompagner dans vos
-            projets.
-             
+            {company.description}
           </p>
-          <p>Rue de l'Industrie, Dakar</p>
+          <p>{company.address}</p>
         </div>
       </div>
     </div>
