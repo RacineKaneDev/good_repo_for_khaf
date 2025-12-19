@@ -53,39 +53,45 @@ const PreventionTable = () => {
           </TableHead>
 
           <TableBody>
-            {[1, 1, 1, 1, 1].map((item) => (
+            {[
+              { id: 1, name: "Omar Diop", email: "omar@example.com", address: "Dakar, Yoff", age: 28, zone: "Mbour", type: "Sensibilisation", date: "05/01/2025", status: "En attente", statusColor: "text-orange-500" },
+              { id: 2, name: "Fatou Sow", email: "fatou@example.com", address: "Saint-Louis, Ndar", age: 34, zone: "Guet Ndar", type: "Causerie", date: "06/01/2025", status: "Validé", statusColor: "text-green-500" },
+              { id: 3, name: "Modou Fall", email: "modou@example.com", address: "Thiès, Cité Lamy", age: 22, zone: "Kayar", type: "Visite Domicile", date: "07/01/2025", status: "Annulé", statusColor: "text-red-500" },
+              { id: 4, name: "Aissatou Ba", email: "aicha@example.com", address: "Ziguinchor, Escale", age: 29, zone: "Cap Skirring", type: "Forum", date: "08/01/2025", status: "En cours", statusColor: "text-blue-500" },
+              { id: 5, name: "Ibou Ndiaye", email: "ibou@example.com", address: "Kaolack, Centre", age: 40, zone: "Nioro", type: "Caravane", date: "09/01/2025", status: "Terminé", statusColor: "text-gray-500" }
+            ].map((item) => (
               <StyledTableRow key={item.id}>
 
                 {/* PREVENU */}
                 <StyledTableCell component="th" scope="row">
                   <ul className="space-y-2">
                     <div>
-                      <li><strong>Nom :</strong> Omar Diop</li>
-                      <li><strong>Email :</strong> omar@example.com</li>
-                      <li><strong>Adresse :</strong> Dakar, Yoff</li>
-                      <li><strong>Âge :</strong> 28</li>
+                      <li><strong>Nom :</strong> {item.name}</li>
+                      <li><strong>Email :</strong> {item.email}</li>
+                      <li><strong>Adresse :</strong> {item.address}</li>
+                      <li><strong>Âge :</strong> {item.age}</li>
                     </div>
                   </ul>
                 </StyledTableCell>
 
                 {/* ZONE */}
                 <StyledTableCell className="space-y-2">
-                  <p>Mbour</p>
+                  <p>{item.zone}</p>
                 </StyledTableCell>
 
                 {/* TYPE */}
                 <StyledTableCell className="space-y-2">
-                  <p>Sensibilisation</p>
+                  <p>{item.type}</p>
                 </StyledTableCell>
 
                 {/* DATE */}
                 <StyledTableCell className="space-y-2">
-                  <p>05/01/2025</p>
+                  <p>{item.date}</p>
                 </StyledTableCell>
 
                 {/* STATUT */}
                 <StyledTableCell>
-                  <p className="text-orange-500">En attente</p>
+                  <p className={item.statusColor}>{item.status}</p>
                 </StyledTableCell>
 
                 {/* ANNULER */}

@@ -50,17 +50,23 @@ const OpportunityTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {[1,1,1,1].map((item) => (
+            {[
+              { id: 1, title: "Financement Boutique Cosmétique", price: "2.000.000", image: "https://images.unsplash.com/photo-1576426863848-c21f5fc67278?w=500" },
+              { id: 2, title: "Achat Pirogue Traditionnelle", price: "500.000", image: "https://images.unsplash.com/photo-1520116468816-95b69f847357?w=500" },
+              { id: 3, title: "Projet Aviculture Moderne", price: "1.500.000", image: "https://images.unsplash.com/photo-1516467508483-a721206156e3?w=500" },
+              { id: 4, title: "Commerce de Tissus", price: "750.000", image: "https://images.unsplash.com/photo-1604514278489-35c1d686720f?w=500" },
+              { id: 5, title: "Transformation de Fruits", price: "1.200.000", image: "https://images.unsplash.com/photo-1615484477778-ca3b77940c25?w=500" }
+            ].map((item) => (
               <StyledTableRow key={item.id}>
                 <StyledTableCell component="th" scope="row">
                   <div className="flex gap-1 flex-wrap">
-                    <img className="w-20 rounded-md" src="https://static.wixstatic.com/media/e6fb96_9b9b4f6c0026482f8548a20db60a68ff~mv2.jpg/v1/fit/w_2500,h_1330,al_c/e6fb96_9b9b4f6c0026482f8548a20db60a68ff~mv2.jpg" alt="" />
+                    <img className="w-20 rounded-md" src={item.image} alt={item.title} />
                   </div>
                 </StyledTableCell>
-                <StyledTableCell align="right">Ouverture boutique cosmetique</StyledTableCell>
+                <StyledTableCell align="right">{item.title}</StyledTableCell>
                 <StyledTableCell align="right">
                   {" "}
-                  2000 fr CFA
+                  {item.price} fr CFA
                 </StyledTableCell>
                 {/* <StyledTableCell align="right">
                   {" "}

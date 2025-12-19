@@ -17,29 +17,35 @@ const TransactionTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {[1,1,1,1].map((item) => (
+            {[
+              { id: 1, date: "05 Aug, 2025", name: "Racine Kane", email: "racine.kane@example.com", phone: "+221 77 123 45 67", amount: "1000" },
+              { id: 2, date: "06 Aug, 2025", name: "Mariama Ba", email: "mariama.ba@example.com", phone: "+221 77 234 56 78", amount: "5000" },
+              { id: 3, date: "07 Aug, 2025", name: "Ousmane Sonko", email: "ousmane.sonko@example.com", phone: "+221 77 345 67 89", amount: "15000" },
+              { id: 4, date: "08 Aug, 2025", name: "Adama Faye", email: "adama.faye@example.com", phone: "+221 77 456 78 90", amount: "2500" },
+              { id: 5, date: "09 Aug, 2025", name: "Seynabou Diop", email: "seynabou.diop@example.com", phone: "+221 77 567 89 01", amount: "7500" }
+            ].map((item) => (
               <TableRow key={item.id}>
                 <TableCell align="left">
                   <div className="space-y-1">
                     <h1 className="font-medium">
-                      05 Aug, 2025
+                      {item.date}
                     </h1>
                     
                   </div>
                 </TableCell>
                 <TableCell component="th" scope="row">
                   <div className="space-y-2">
-                    <h1>racine kane</h1>
-                    <h1 className="font-semibold">racine.kane@example.com</h1>
+                    <h1>{item.name}</h1>
+                    <h1 className="font-semibold">{item.email}</h1>
                     <h1 className="font-bold text-gray-600">
-                      +221 77 123 45 67
+                      {item.phone}
                     </h1>
                   </div>
                 </TableCell>
                 <TableCell>
-                  Booking Id : <strong> 1 </strong>
+                  Booking Id : <strong> {item.id} </strong>
                 </TableCell>
-                <TableCell align="right">1000 fr CFA</TableCell>
+                <TableCell align="right">{item.amount} fr CFA</TableCell>
               </TableRow>
             ))}
           </TableBody>

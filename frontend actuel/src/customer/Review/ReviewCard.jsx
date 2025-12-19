@@ -8,7 +8,7 @@ import { red } from "@mui/material/colors";
 
 
 
-const ReviewCard = () => {
+const ReviewCard = ({ item }) => {
  
   return (
     <div className="flex justify-between">
@@ -18,33 +18,32 @@ const ReviewCard = () => {
             <Avatar
               className="text-white"
               sx={{ width: 56, height: 56, bgcolor: "#9155FD" }}
-              alt=""
+              alt={item?.author}
               src=""
             >
-              RK
+              {item?.author?.[0]}
             </Avatar>
           </Box>
         </Grid>
         <Grid item xs={9}>
           <div className="space-y-2">
             <div className="">
-              <p className="font-semibold text-lg">Racine Kane</p>
-              <p className="opacity-70">Il y a 2 jours</p>
+              <p className="font-semibold text-lg">{item?.author}</p>
+              <p className="opacity-70">{item?.date}</p>
             </div>
             <div>
 
 
               <Rating
                 readOnly
-                value={4.5}
+                value={item?.rating}
                 name="half-rating"
-                defaultValue={2.5}
                 precision={0.5}
               />
 
             </div>
             <p>
-              GIZ est une excellente et très serieuse compagnie dans le cadre des financements de projet.
+              {item?.text}
             </p>
            
           </div>

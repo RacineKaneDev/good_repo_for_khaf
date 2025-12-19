@@ -5,14 +5,14 @@ const CategoryCard = ({ handleCategoryClick, selectedCategory,item}) => {
     <div
       onClick={handleCategoryClick}
       className={`px-3 py-2 cursor-pointer flex gap-2 items-center ${
-      selectedCategory===item?"bg-green-600 text-white rounded-md":""}`}
+      selectedCategory===item.name?"bg-green-600 text-white rounded-md":""}`}
     >
       <img
         className="w-14 h-14 object-cover rounded-full"
-        src= "https://www.senpages.com/content/uploads/agriculture-au-senegal-senpages.jpeg"
-        alt=""
+        src={item.image}
+        alt={item.name}
       />
-      <h1>Agriculture</h1>
+      <h1>{item.name}</h1>
     </div>
   )
 }

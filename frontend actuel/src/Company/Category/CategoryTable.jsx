@@ -59,14 +59,20 @@ const CategoryTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {[1,1,1].map((item) => (
+            {[
+              { id: 1, name: "Agriculture", image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=500&auto=format&fit=crop&q=60" },
+              { id: 2, name: "Élevage", image: "https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=500&auto=format&fit=crop&q=60" },
+              { id: 3, name: "Pêche", image: "https://images.unsplash.com/photo-1534068590799-09895a701e3e?w=500&auto=format&fit=crop&q=60" },
+              { id: 4, name: "Artisanat", image: "https://images.unsplash.com/photo-1606744881471-1f3d891f74b6?w=500&auto=format&fit=crop&q=60" },
+              { id: 5, name: "Commerce", image: "https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?w=500&auto=format&fit=crop&q=60" }
+            ].map((item) => (
               <StyledTableRow key={item.id}>
                 <StyledTableCell component="th" scope="row">
                   <div className="flex gap-1 flex-wrap">
-                    <img className="w-20 rounded-md" src="https://centre-developpement-agroecologie.fr/wp-content/uploads/elevage-en-agroecologie-e1614766757325.jpg" alt="" />
+                    <img className="w-20 rounded-md" src={item.image} alt={item.name} />
                   </div>
                 </StyledTableCell>
-                <StyledTableCell>Elevage</StyledTableCell>
+                <StyledTableCell>{item.name}</StyledTableCell>
 
                 <StyledTableCell align="right">
                   <IconButton

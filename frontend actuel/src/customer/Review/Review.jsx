@@ -19,9 +19,15 @@ const Review = () => {
   
       <div className='mt-10'>
           <div className="space-y-5">
-              {[1,1,1,1,1].map((item) => (
-                  <div className='space-y-5'>
-                      <ReviewCard />
+              {[
+                  { id: 1, author: "Moussa Diop", rating: 5, date: "Il y a 2 jours", text: "Excellent service ! J'ai obtenu mon financement en moins de 2 semaines. Merci Ndank Ndank." },
+                  { id: 2, author: "Fatou Ndiaye", rating: 4.5, date: "Il y a 1 semaine", text: "Très bonne initiative pour les jeunes. L'accompagnement est réel." },
+                  { id: 3, author: "Cheikh Fall", rating: 4, date: "Il y a 3 semaines", text: "Processus un peu long mais ça vaut le coup. Je recommande." },
+                  { id: 4, author: "Awa Sy", rating: 5, date: "Il y a 1 mois", text: "Grâce à vous, j'ai pu ouvrir mon atelier de couture. Dieureudieuf !" },
+                  { id: 5, author: "Modou Ndiaye", rating: 4, date: "Il y a 1 mois", text: "Une vraie solution pour l'emploi des jeunes." }
+              ].map((item) => (
+                  <div key={item.id} className='space-y-5'>
+                      <ReviewCard item={item} />
                        <Divider />
                   </div>
               ))}
